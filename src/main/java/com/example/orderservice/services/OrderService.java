@@ -38,8 +38,12 @@ public class OrderService {
     }
 
     public Double calculateAmount(Long orderId) throws InvalidOrderException {
-        Orders order= orderRepository.findById(orderId).get();
+        Optional<Orders> optionalOrder= orderRepository.findById(orderId);
+        if(optionalOrder.isEmpty()){
+            throw new InvalidOrderException("Order not found");
+        }
 
+        Orders order= optionalOrder.get();
         List<Product> products = order.getProducts();
         if(products.isEmpty()){
             throw new InvalidOrderException("Order not found");
