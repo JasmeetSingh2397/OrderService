@@ -5,13 +5,10 @@ import com.example.orderservice.dtos.OrderDto;
 import com.example.orderservice.dtos.OrderGenerateRequestDto;
 import com.example.orderservice.exceptions.InvalidOrderException;
 import com.example.orderservice.models.Orders;
-import com.example.orderservice.models.Product;
 import com.example.orderservice.services.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -42,6 +39,13 @@ public class OrderController {
     public ResponseEntity<OrderDto> getOrder(@PathVariable("id") Long orderId) throws InvalidOrderException {
         Orders order= orderService.getOrder(orderId);
         return new ResponseEntity<>(OrderDto.from(order),HttpStatus.OK);
+
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<OrderDto> placeOrder(@PathVariable("id") Long orderId) throws InvalidOrderException {
+        orderService.placeOrder(orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
 
     }
 }
